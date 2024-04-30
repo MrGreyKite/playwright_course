@@ -4,13 +4,16 @@
   "description": "Project for Playwright educational course",
   "main": "index.js",
   "scripts": {
-    "tst": "playwright test"
+    "tst": "playwright test",
+    "pretest_ts": "tsc --incremental -p tests/tsconfig.json",
+    "test_ts": "playwright test -c tests-out"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.43.1",
-    "@types/node": "^20.12.7"
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
   }
 }
