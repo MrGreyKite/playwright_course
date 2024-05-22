@@ -1,3 +1,4 @@
 ## Test Educational Project
 
-Playwright course - from Inzhenerka Tech
+Course for testing automation with Playwright from Inzhenerka Tech (https://inzhenerka.tech/)
+
