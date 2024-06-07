@@ -1,17 +1,18 @@
 import { test, expect } from '@playwright/test';
 
+const base_url = 'https://todo-app-sky.herokuapp.com';
+
 test("Создание задачи", async ({request}) => {
     const todoTitle: string = "Изучить ApiRequestContext"
     const todo = {
         "title": todoTitle
     }
 
-    const response = await request.post("https://todo-app-sky.herokuapp.com", {
+    const response = await request.post(base_url, {
         data: todo
       });
     
     const body = await response.json();
-    console.log(body)
 
     let {id: task_id} = await response.json();
 
@@ -20,7 +21,7 @@ test("Создание задачи", async ({request}) => {
 
     //post-condition - очищение тестовых данных
     try {
-        const delete_response = await request.delete(`https://todo-app-sky.herokuapp.com/${task_id}`);
+        const delete_response = await request.delete(`${base_url}/${task_id}`);
         if (!delete_response.ok()) {
             throw new Error(`Ошибка при удалении задачи: ${delete_response.statusText()}`);
         }
@@ -30,7 +31,7 @@ test("Создание задачи", async ({request}) => {
 
         // Повторный GET-запрос для проверки, что задача действительно удалена
         try {
-            const double_check_response = await request.get(`https://todo-app-sky.herokuapp.com/${task_id}`);
+            const double_check_response = await request.get(`${base_url}/${task_id}`);
             if (double_check_response.ok()) {
                 const existing_task = await double_check_response.json();
                 console.log("Задача все еще существует:", existing_task);
@@ -51,25 +52,24 @@ test("Создание задачи", async ({request}) => {
         "title": task_title
     }
 
-    const create_response = await request.post("https://todo-app-sky.herokuapp.com", {
+    const create_response = await request.post(base_url, {
         data: todo
       });
     
     let {id: task_id} = await create_response.json();
 
     const new_title = task_title + " в Playwright"
-    const response = await request.patch("https://todo-app-sky.herokuapp.com/" + task_id, {
+    const response = await request.patch(`${base_url}/${task_id}`, {
         data: {"title": new_title}
     })
 
-    const {title: title_in_body} = await response.json();
-
+    let {title: title_in_body} = await response.json();
     expect(response.status()).toBe(200);
     expect(title_in_body).toEqual(new_title);
 
     //post-condition - очищение тестовых данных
     try {
-        const delete_response = await request.delete(`https://todo-app-sky.herokuapp.com/${task_id}`);
+        const delete_response = await request.delete(`${base_url}/${task_id}`);
         if (!delete_response.ok()) {
             throw new Error(`Ошибка при удалении задачи: ${delete_response.statusText()}`);
         }
@@ -79,7 +79,7 @@ test("Создание задачи", async ({request}) => {
 
         // Повторный GET-запрос для проверки, что задача действительно удалена
         try {
-            const double_check_response = await request.get(`https://todo-app-sky.herokuapp.com/${task_id}`);
+            const double_check_response = await request.get(`${base_url}/${task_id}`);
             if (double_check_response.ok()) {
                 const existing_task = await double_check_response.json();
                 console.log("Задача все еще существует:", existing_task);
@@ -99,26 +99,24 @@ test("Создание задачи", async ({request}) => {
         "title": task_title
     }
 
-    const create_response = await request.post("https://todo-app-sky.herokuapp.com", {
+    const create_response = await request.post(base_url, {
         data: todo
       });
     
     let {id: task_id} = await create_response.json();
 
-    const new_title = task_title + " в Playwright"
-
-    const response_for_completion = await request.patch(`https://todo-app-sky.herokuapp.com/${task_id}`, {
+    const response_for_completion = await request.patch(`${base_url}/${task_id}`, {
         data: {"completed": true}
     })
 
-    const {completed: completion_status} = await response_for_completion.json();
+    let {completed: completion_status} = await response_for_completion.json();
 
     expect(response_for_completion.status()).toBe(200);
     expect(completion_status).toBeTruthy();
 
     //post-condition - очищение тестовых данных
     try {
-        const delete_response = await request.delete(`https://todo-app-sky.herokuapp.com/${task_id}`);
+        const delete_response = await request.delete(`${base_url}/${task_id}`);
         if (!delete_response.ok()) {
             throw new Error(`Ошибка при удалении задачи: ${delete_response.statusText()}`);
         }
@@ -128,7 +126,7 @@ test("Создание задачи", async ({request}) => {
 
         // Повторный GET-запрос для проверки, что задача действительно удалена
         try {
-            const double_check_response = await request.get(`https://todo-app-sky.herokuapp.com/${task_id}`);
+            const double_check_response = await request.get(`${base_url}/${task_id}`);
             if (double_check_response.ok()) {
                 const existing_task = await double_check_response.json();
                 console.log("Задача все еще существует:", existing_task);
